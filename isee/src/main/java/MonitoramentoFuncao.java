@@ -89,6 +89,59 @@ public class MonitoramentoFuncao {
 
         con.update(insertHistorico, ram, processador, disco, idMaquina);
     }
+    
+       public void registrarAlertas(funcao dados2) {
+           
+        String idMaquinaString = identificadorMaquina();
+        int idMaquina = Integer.parseInt(idMaquinaString);
+
+        MetricasAlerta metricas = new MetricasAlerta(10, 20, 10.0, 20.0, 10, 20);
+        String insertAlerta = "INSERT INTO Alerta (fkMaquina,componente,nivelAlerta,dado,datahoraAlerta) VALUES (?, ?, ?, ?)";
+        
+        // DISCO
+        Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
+        String disco = Long.toString(TempoDeTransferencia);
+        disco = disco.substring(0, 3);
+        Integer discoInteger = Integer.parseInt(disco);
+        
+        if (discoInteger >= metricas.getDiscoVermelho())
+            con.update(insertAlerta, idMaquina, "vermelho", disco.toString(), metricas.getDateTime());
+        else if (discoInteger >= metricas.getDiscoAmarelo())
+            con.update(insertAlerta, idMaquina, "amarelo", disco.toString(), metricas.getDateTime());
+        
+        // RAM
+        Long Disponivel = dados2.getDisponivel();
+        String ramString = Long.toString(Disponivel);
+        ramString = ramString.substring(0, 2);
+        Integer ram = Integer.parseInt(ramString);
+        ram--;
+        
+        if (ram >= metricas.getRamVermelho())
+            con.update(insertAlerta, idMaquina, "vermelho", ram.toString(), metricas.getDateTime());
+        else if (ram >= metricas.getRamAmarelo())
+            con.update(insertAlerta, idMaquina, "amarelo", ram.toString(), metricas.getDateTime());
+        
+        // CPU
+        Double Uso = dados2.getUso();
+        String processadorString = Double.toString(Uso);
+        processadorString = processadorString.substring(0, 3);
+        Double processador = Double.parseDouble(processadorString);
+        processador++;
+        processador = processador / 100;
+        
+        if (processador >= metricas.getCpuVermelho())
+            con.update(insertAlerta, idMaquina, "vermelho", ram.toString(), metricas.getDateTime());
+        else if (processador >= metricas.getDiscoAmarelo())
+            con.update(insertAlerta, idMaquina, "amarelo", ram.toString(), metricas.getDateTime());
+
+
+        
+    }
+    
+    
+    
+    
+    
 
     Connection conn;
 
