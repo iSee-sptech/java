@@ -13,12 +13,12 @@ import java.util.Date;
  * @author User
  */
 public class MetricasAlerta {
-    private Integer ramAmarelo;
-    private Integer ramVermelho;
+    private Double ramAmarelo;
+    private Double ramVermelho;
     private Double cpuAmarelo;
     private Double cpuVermelho;
-    private Integer discoAmarelo;
-    private Integer discoVermelho;
+    private Double discoAmarelo;
+    private Double discoVermelho;
     
     public String getDateTime() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -26,7 +26,7 @@ public class MetricasAlerta {
         return dateFormat.format(date);
     }
 
-    public MetricasAlerta(Integer ramAmarelo, Integer ramVermelho, Double cpuAmarelo, Double cpuVermelho, Integer discoAmarelo, Integer discoVermelho) {
+    public MetricasAlerta(Double ramAmarelo, Double ramVermelho, Double cpuAmarelo, Double cpuVermelho, Double discoAmarelo, Double discoVermelho) {
         this.ramAmarelo = ramAmarelo;
         this.ramVermelho = ramVermelho;
         this.cpuAmarelo = cpuAmarelo;
@@ -35,11 +35,11 @@ public class MetricasAlerta {
         this.discoVermelho = discoVermelho;
     }
 
-    public Integer getRamAmarelo() {
+    public Double getRamAmarelo() {
         return ramAmarelo;
     }
 
-    public Integer getRamVermelho() {
+    public Double getRamVermelho() {
         return ramVermelho;
     }
 
@@ -51,11 +51,11 @@ public class MetricasAlerta {
         return cpuVermelho;
     }
 
-    public Integer getDiscoAmarelo() {
+    public Double getDiscoAmarelo() {
         return discoAmarelo;
     }
 
-    public Integer getDiscoVermelho() {
+    public Double getDiscoVermelho() {
         return discoVermelho;
     }
     

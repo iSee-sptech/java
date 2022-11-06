@@ -92,10 +92,36 @@ public class MonitoramentoFuncao {
     
        public void registrarAlertas(funcao dados2) {
            
+        // PEGANDO DADOS ESTÁTICOS
         String idMaquinaString = identificadorMaquina();
         int idMaquina = Integer.parseInt(idMaquinaString);
+        
+        Long TamanhoTotal = dados2.getTamanhoTotal();
+        String discoTotal = Long.toString(TamanhoTotal);
+        discoTotal = discoTotal.substring(0, 3);
+        Integer discoTotalInteger = Integer.parseInt(discoTotal);
+        
+        Long Total = dados2.getTotal();
+        String ramString = Long.toString(Total);
+        ramString = ramString.substring(0, 2);
+        Integer ramTotal = Integer.parseInt(ramString);
+        ramTotal--;
 
-        MetricasAlerta metricas = new MetricasAlerta(10, 20, 10.0, 20.0, 10, 20);
+        Long frequencia = dados2.getFrequencia();
+        String processadorString = Long.toString(frequencia);
+        processadorString = processadorString.substring(0, 3);
+        Double processadorTotal = Double.parseDouble(processadorString);
+        processadorTotal++;
+        processadorTotal = processadorTotal / 100;
+        
+
+        MetricasAlerta metricas = new MetricasAlerta(
+                ramTotal * 0.7, 
+                ramTotal * 0.8, 
+                processadorTotal * 0.6, 
+                processadorTotal * 0.8, 
+                discoTotalInteger * 0.7, 
+                discoTotalInteger * 0.9);
         String insertAlerta = "INSERT INTO Alerta (fkMaquina,componente,nivelAlerta,dado,datahoraAlerta) VALUES (?, ?, ?, ?)";
         
         // DISCO
@@ -111,9 +137,9 @@ public class MonitoramentoFuncao {
         
         // RAM
         Long Disponivel = dados2.getDisponivel();
-        String ramString = Long.toString(Disponivel);
-        ramString = ramString.substring(0, 2);
-        Integer ram = Integer.parseInt(ramString);
+        String ramEmString = Long.toString(Disponivel);
+        ramEmString = ramEmString.substring(0, 2);
+        Integer ram = Integer.parseInt(ramEmString);
         ram--;
         
         if (ram >= metricas.getRamVermelho())
@@ -123,16 +149,16 @@ public class MonitoramentoFuncao {
         
         // CPU
         Double Uso = dados2.getUso();
-        String processadorString = Double.toString(Uso);
-        processadorString = processadorString.substring(0, 3);
-        Double processador = Double.parseDouble(processadorString);
+        String processadorEmString = Double.toString(Uso);
+        processadorEmString = processadorEmString.substring(0, 3);
+        Double processador = Double.parseDouble(processadorEmString);
         processador++;
         processador = processador / 100;
         
         if (processador >= metricas.getCpuVermelho())
-            con.update(insertAlerta, idMaquina, "vermelho", ram.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "vermelho", processador.toString(), metricas.getDateTime());
         else if (processador >= metricas.getDiscoAmarelo())
-            con.update(insertAlerta, idMaquina, "amarelo", ram.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "amarelo", processador.toString(), metricas.getDateTime());
 
 
         
