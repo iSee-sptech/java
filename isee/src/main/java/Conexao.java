@@ -22,6 +22,7 @@ public class Conexao {
         datasource.setUsername("root");
 
         datasource.setPassword("KingOfNothing000");
+        //KingOfNothing000
 
         //this.datasource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         //this.datasource.setUrl("jdbc:mysql://localhost:3360/meu_banco");

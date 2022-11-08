@@ -131,10 +131,12 @@ public class MonitoramentoFuncao {
         discoString = discoString.substring(0, 3);
         Integer disco = Integer.parseInt(discoString);
         
-        if (disco >= metricas.getDiscoVermelho())
+        if (disco >= metricas.getDiscoVermelho()){
             con.update(insertAlerta, idMaquina, "vermelho", disco.toString(), metricas.getDateTime());
-        else if (disco >= metricas.getDiscoAmarelo())
+            SlackApi.mandarMensagemParaSlack("Uso de Disco acima de 90%", "Uso de Disco", discoString);
+        }else if (disco >= metricas.getDiscoAmarelo()){
             con.update(insertAlerta, idMaquina, "amarelo", disco.toString(), metricas.getDateTime());
+        }
         
         // RAM
         Long Disponivel = dados2.getEmUso();
