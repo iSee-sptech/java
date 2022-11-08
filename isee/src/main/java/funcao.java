@@ -65,5 +65,11 @@ public class funcao {
     public Double getUso() {
         return funcaoProcessador.getUso();
     }
+    
+    public Long getEmUso(){
+        return funcaoMemoria.getEmUso();
+        
+    }
+    
 
 }

@@ -44,7 +44,7 @@
             <version>2.8.0</version>
         </dependency>
         
-                <!-- https://mvnrepository.com/artifact/com.github.seratch/jslack -->
+        
         <dependency>
             <groupId>com.github.seratch</groupId>
             <artifactId>jslack</artifactId>

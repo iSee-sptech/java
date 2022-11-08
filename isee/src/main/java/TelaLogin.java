@@ -95,7 +95,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Login :");
+        jLabel5.setText("E-mail :");
 
         jLabel6.setFont(new java.awt.Font("Yu Gothic UI", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));

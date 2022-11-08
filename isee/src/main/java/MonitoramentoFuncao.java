@@ -70,11 +70,10 @@ public class MonitoramentoFuncao {
         String disco = Long.toString(TempoDeTransferencia);
         disco = disco.substring(0, 3);
 
-        Long Disponivel = dados2.getDisponivel();
+        Long Disponivel = dados2.getEmUso();
         String ramString = Long.toString(Disponivel);
-        ramString = ramString.substring(0, 2);
+        ramString = ramString.substring(0, 1);
         int ram = Integer.parseInt(ramString);
-        ram--;
 
         Double Uso = dados2.getUso();
         String processadorString = Double.toString(Uso);
@@ -88,9 +87,11 @@ public class MonitoramentoFuncao {
         // int idMaquina = selectMaquina();
 
         con.update(insertHistorico, ram, processador, disco, idMaquina);
+        
+        
     }
-    
-       public void registrarAlertas(funcao dados2) {
+
+    public void registrarAlertas(funcao dados2) {
            
         // PEGANDO DADOS ESTÁTICOS
         String idMaquinaString = identificadorMaquina();
@@ -101,7 +102,7 @@ public class MonitoramentoFuncao {
         discoTotal = discoTotal.substring(0, 3);
         Integer discoTotalInteger = Integer.parseInt(discoTotal);
         
-        Long Total = dados2.getTotal();
+         Long Total = dados2.getTotal();
         String ramString = Long.toString(Total);
         ramString = ramString.substring(0, 2);
         Integer ramTotal = Integer.parseInt(ramString);
@@ -115,32 +116,31 @@ public class MonitoramentoFuncao {
         processadorTotal = processadorTotal / 100;
         
 
-        MetricasAlerta metricas = new MetricasAlerta(
-                ramTotal * 0.7, 
+       MetricaAlerta metricas = new MetricaAlerta(
+                ramTotal * 0.3, 
                 ramTotal * 0.8, 
-                processadorTotal * 0.6, 
+                processadorTotal * 0.3, 
                 processadorTotal * 0.8, 
-                discoTotalInteger * 0.7, 
+                discoTotalInteger * 0.3, 
                 discoTotalInteger * 0.9);
         String insertAlerta = "INSERT INTO Alerta (fkMaquina,componente,nivelAlerta,dado,datahoraAlerta) VALUES (?, ?, ?, ?)";
         
         // DISCO
         Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
-        String disco = Long.toString(TempoDeTransferencia);
-        disco = disco.substring(0, 3);
-        Integer discoInteger = Integer.parseInt(disco);
+        String discoString = Long.toString(TempoDeTransferencia);
+        discoString = discoString.substring(0, 3);
+        Integer disco = Integer.parseInt(discoString);
         
-        if (discoInteger >= metricas.getDiscoVermelho())
+        if (disco >= metricas.getDiscoVermelho())
             con.update(insertAlerta, idMaquina, "vermelho", disco.toString(), metricas.getDateTime());
-        else if (discoInteger >= metricas.getDiscoAmarelo())
+        else if (disco >= metricas.getDiscoAmarelo())
             con.update(insertAlerta, idMaquina, "amarelo", disco.toString(), metricas.getDateTime());
         
         // RAM
-        Long Disponivel = dados2.getDisponivel();
-        String ramEmString = Long.toString(Disponivel);
-        ramEmString = ramEmString.substring(0, 2);
-        Integer ram = Integer.parseInt(ramEmString);
-        ram--;
+        Long Disponivel = dados2.getEmUso();
+        String ramString2 = Long.toString(Disponivel);
+        ramString2 = ramString2.substring(0, 1);
+        Integer ram = Integer.parseInt(ramString2);
         
         if (ram >= metricas.getRamVermelho())
             con.update(insertAlerta, idMaquina, "vermelho", ram.toString(), metricas.getDateTime());
@@ -149,9 +149,9 @@ public class MonitoramentoFuncao {
         
         // CPU
         Double Uso = dados2.getUso();
-        String processadorEmString = Double.toString(Uso);
-        processadorEmString = processadorEmString.substring(0, 3);
-        Double processador = Double.parseDouble(processadorEmString);
+        String processadorString2 = Double.toString(Uso);
+        processadorString2 = processadorString2.substring(0, 3);
+        Double processador = Double.parseDouble(processadorString2);
         processador++;
         processador = processador / 100;
         
@@ -159,17 +159,10 @@ public class MonitoramentoFuncao {
             con.update(insertAlerta, idMaquina, "vermelho", processador.toString(), metricas.getDateTime());
         else if (processador >= metricas.getDiscoAmarelo())
             con.update(insertAlerta, idMaquina, "amarelo", processador.toString(), metricas.getDateTime());
-
-
         
     }
-    
-    
-    
-    
-    
-
-    Connection conn;
+ 
+    Connection conn;   
 
     public ResultSet loginUsuario(LoginDTO objLoginDTO) {
         conn = new Conexao().conectaBD();
