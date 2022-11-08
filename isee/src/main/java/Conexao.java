@@ -17,12 +17,11 @@ public class Conexao {
 
         datasource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
-        datasource.setUrl("jdbc:mysql://localhost:3306/isee");
+        datasource.setUrl("jdbc:mysql://localhost:3306/iSee");
 
-        datasource.setUsername("root");
+        datasource.setUsername("aluno");
 
-        datasource.setPassword("KingOfNothing000");
-        //KingOfNothing000
+        datasource.setPassword("sptech");
 
         //this.datasource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         //this.datasource.setUrl("jdbc:mysql://localhost:3360/meu_banco");
@@ -39,7 +38,7 @@ public class Conexao {
         Connection conn = null;
         
         try {
-            String url = "jdbc:mysql://localhost:3306/isee?user=root&password=KingOfNothing000";
+            String url = "jdbc:mysql://localhost:3306/iSee?user=aluno&password=sptech";
             conn = DriverManager.getConnection(url);
             
         } catch(SQLException erro){

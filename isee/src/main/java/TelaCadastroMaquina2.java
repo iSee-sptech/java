@@ -195,7 +195,7 @@ public class TelaCadastroMaquina2 extends javax.swing.JFrame {
                     try {
                         System.out.println("Dado envidado para registro");
                         func.registrarHistorico(dados2);
-                        func.registrarAlertas(dados2);
+                        
                     } catch (Exception ex) {
                         System.out.println("Ocorreu uma falhar ao tentar cadastra os dados:");
 

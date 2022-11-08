@@ -33,13 +33,23 @@ public class MonitoramentoFuncao {
 
         Long TamanhoTotal = dados.getTamanhoTotal();
         String disco = Long.toString(TamanhoTotal);
-        disco = disco.substring(0, 3);
+        if (disco.length() > 12) {
+            disco = disco.substring(0, 4);
+        } else {
+            disco = disco.substring(0, 3);
+        }
 
         Long Total = dados.getTotal();
         String ramString = Long.toString(Total);
-        ramString = ramString.substring(0, 2);
+        if (ramString.length() > 10) {
+            ramString = ramString.substring(0, 2);
+        } else {
+            ramString = ramString.substring(0, 1);
+        }
         int ram = Integer.parseInt(ramString);
-        ram--;
+        if (ram > 10) {
+            ram--;
+        }
 
         Long frequencia = dados.getFrequencia();
         String processadorString = Long.toString(frequencia);
@@ -47,7 +57,7 @@ public class MonitoramentoFuncao {
         Double processador = Double.parseDouble(processadorString);
         processador++;
         processador = processador / 100;
-        
+
         con.update(insertMaquina, so, fabricante, arquitetura, tempoAtividade, disco, ram, processador);
 
     }
@@ -89,20 +99,34 @@ public class MonitoramentoFuncao {
         con.update(insertHistorico, ram, processador, disco, idMaquina);
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
     }
 
     public void registrarAlertas(funcao dados2) {
-           
+
         // PEGANDO DADOS ESTÁTICOS
         String idMaquinaString = identificadorMaquina();
         int idMaquina = Integer.parseInt(idMaquinaString);
-        
+
         Long TamanhoTotal = dados2.getTamanhoTotal();
         String discoTotal = Long.toString(TamanhoTotal);
         discoTotal = discoTotal.substring(0, 3);
         Integer discoTotalInteger = Integer.parseInt(discoTotal);
-        
-         Long Total = dados2.getTotal();
+
+        Long Total = dados2.getTotal();
         String ramString = Long.toString(Total);
         ramString = ramString.substring(0, 2);
         Integer ramTotal = Integer.parseInt(ramString);
@@ -114,41 +138,40 @@ public class MonitoramentoFuncao {
         Double processadorTotal = Double.parseDouble(processadorString);
         processadorTotal++;
         processadorTotal = processadorTotal / 100;
-        
 
-       MetricaAlerta metricas = new MetricaAlerta(
-                ramTotal * 0.3, 
-                ramTotal * 0.8, 
-                processadorTotal * 0.3, 
-                processadorTotal * 0.8, 
-                discoTotalInteger * 0.3, 
-                discoTotalInteger * 0.9);
+        MetricaAlerta metricas = new MetricaAlerta(
+                ramTotal * 0.1,
+                ramTotal * 0.2,
+                processadorTotal * 0.1,
+                processadorTotal * 0.2,
+                discoTotalInteger * 0.1,
+                discoTotalInteger * 0.2);
         String insertAlerta = "INSERT INTO Alerta (fkMaquina,componente,nivelAlerta,dado,datahoraAlerta) VALUES (?, ?, ?, ?)";
-        
+
         // DISCO
         Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
         String discoString = Long.toString(TempoDeTransferencia);
         discoString = discoString.substring(0, 3);
         Integer disco = Integer.parseInt(discoString);
-        
-        if (disco >= metricas.getDiscoVermelho()){
+
+        if (disco >= metricas.getDiscoVermelho()) {
             con.update(insertAlerta, idMaquina, "vermelho", disco.toString(), metricas.getDateTime());
-            SlackApi.mandarMensagemParaSlack("Uso de Disco acima de 90%", "Uso de Disco", discoString);
-        }else if (disco >= metricas.getDiscoAmarelo()){
+        } else if (disco >= metricas.getDiscoAmarelo()) {
             con.update(insertAlerta, idMaquina, "amarelo", disco.toString(), metricas.getDateTime());
         }
-        
+
         // RAM
         Long Disponivel = dados2.getEmUso();
         String ramString2 = Long.toString(Disponivel);
         ramString2 = ramString2.substring(0, 1);
         Integer ram = Integer.parseInt(ramString2);
-        
-        if (ram >= metricas.getRamVermelho())
+
+        if (ram >= metricas.getRamVermelho()) {
             con.update(insertAlerta, idMaquina, "vermelho", ram.toString(), metricas.getDateTime());
-        else if (ram >= metricas.getRamAmarelo())
+        } else if (ram >= metricas.getRamAmarelo()) {
             con.update(insertAlerta, idMaquina, "amarelo", ram.toString(), metricas.getDateTime());
-        
+        }
+
         // CPU
         Double Uso = dados2.getUso();
         String processadorString2 = Double.toString(Uso);
@@ -156,21 +179,22 @@ public class MonitoramentoFuncao {
         Double processador = Double.parseDouble(processadorString2);
         processador++;
         processador = processador / 100;
-        
-        if (processador >= metricas.getCpuVermelho())
+
+        if (processador >= metricas.getCpuVermelho()) {
             con.update(insertAlerta, idMaquina, "vermelho", processador.toString(), metricas.getDateTime());
-        else if (processador >= metricas.getDiscoAmarelo())
+        } else if (processador >= metricas.getDiscoAmarelo()) {
             con.update(insertAlerta, idMaquina, "amarelo", processador.toString(), metricas.getDateTime());
-        
+        }
+
     }
- 
-    Connection conn;   
+
+    Connection conn;
 
     public ResultSet loginUsuario(LoginDTO objLoginDTO) {
         conn = new Conexao().conectaBD();
 
         try {
-            String selectLogin = "SELECT * FROM usuarios where emailUsuario = ? AND senhaUsuario = ?";
+            String selectLogin = "SELECT * FROM Usuarios where emailUsuario = ? AND senhaUsuario = ?";
             PreparedStatement pstm = conn.prepareStatement(selectLogin);
             pstm.setString(1, objLoginDTO.getEmailUsuario());
             pstm.setString(2, objLoginDTO.getSenhaUsuario());
