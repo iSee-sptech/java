@@ -97,21 +97,6 @@ public class MonitoramentoFuncao {
         // int idMaquina = selectMaquina();
 
         con.update(insertHistorico, ram, processador, disco, idMaquina);
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
     }
 
@@ -156,6 +141,7 @@ public class MonitoramentoFuncao {
 
         if (disco >= metricas.getDiscoVermelho()) {
             con.update(insertAlerta, idMaquina, "vermelho", disco.toString(), metricas.getDateTime());
+            SlackApi.mandarMensagemParaSlack("Uso de Disco acima de 90%", "Uso de Disco", discoString);
         } else if (disco >= metricas.getDiscoAmarelo()) {
             con.update(insertAlerta, idMaquina, "amarelo", disco.toString(), metricas.getDateTime());
         }
