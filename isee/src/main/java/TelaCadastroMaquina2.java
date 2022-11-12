@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.sql.ResultSet;
 import java.util.TimerTask;
 import java.util.Timer;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -195,9 +197,9 @@ public class TelaCadastroMaquina2 extends javax.swing.JFrame {
                     try {
                         System.out.println("Dado envidado para registro");
                         func.registrarHistorico(dados2);
-                        
-                    } catch (Exception ex) {
-                        System.out.println("Ocorreu uma falhar ao tentar cadastra os dados:");
+                        func.registrarAlertas(dados2);
+                    } catch (Exception erro) {
+                        JOptionPane.showMessageDialog(null, "Historico: " + erro);
 
                     }
                     if (j == 2) {

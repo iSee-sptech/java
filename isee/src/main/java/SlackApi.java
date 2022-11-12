@@ -7,8 +7,8 @@ import java.util.Date;
 
 public class SlackApi {
 
-    private static String webHookUrl = "https://hooks.slack.com/services/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";
-    private static String oAuthToken = "xoxb-4280815226007-4311674802775-FYVjxruHlE2eBhMD6dGjA8kJ";
+    private static String webHookUrl = "https://hooks.slack.com/services/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";
+    private static String oAuthToken = "xoxb-4280815226007-4311674802775-Cw5yfa4M8djFO6e9MLMymRxW";
     private static String slackChannel = "alertas-da-maquina";
     
     public static void mandarMensagemParaSlack(String mensagem, String tipo, String valor) {

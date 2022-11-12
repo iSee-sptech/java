@@ -19,8 +19,9 @@ public class MonitoramentoFuncao {
 
     public void registrarMaquina(funcao dados) {
 
-        String insertMaquina = "INSERT INTO Maquinas (idMaquina, sistemaOperacionalMaquina, fabricanteMaquina, arquiteturaMaquina, tempoDeAtividade, discoMaquina, ramMaquina, processadorMaquina) VALUES (null, ?, ?, ?, ?, ?, ?, ?)";
-
+         try {
+        
+        //String insertMaquina = "INSERT INTO Maquinas (sistemaOperacionalMaquina, fabricanteMaquina, arquiteturaMaquina, tempoDeAtividade, discoMaquina, ramMaquina, processadorMaquina, fkUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         // Parametros para o primeiro insert
         String so = dados.getOP();
         Integer arquitetura = dados.getArquitetura();
@@ -46,7 +47,7 @@ public class MonitoramentoFuncao {
         } else {
             ramString = ramString.substring(0, 1);
         }
-        int ram = Integer.parseInt(ramString);
+        Integer ram = Integer.parseInt(ramString);
         if (ram > 10) {
             ram--;
         }
@@ -58,8 +59,14 @@ public class MonitoramentoFuncao {
         processador++;
         processador = processador / 100;
 
-        con.update(insertMaquina, so, fabricante, arquitetura, tempoAtividade, disco, ram, processador);
+        String insertMaquina = String.format("INSERT INTO Maquinas (sistemaOperacionalMaquina, fabricanteMaquina, arquiteturaMaquina, tempoDeAtividade, discoMaquina, ramMaquina, processadorMaquina) VALUES ('%s', '%s', '%d', '%d', '%s', '%d', '%.1f')", so, fabricante, arquitetura, tempoAtividade, disco, ram, processador);
+        con.execute(insertMaquina);
 
+        
+        
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, "Registrar Maquina: " + erro);
+        }
     }
 
     //public int selectMaquina() {
@@ -73,7 +80,7 @@ public class MonitoramentoFuncao {
     //}
     public void registrarHistorico(funcao dados2) {
 
-        String insertHistorico = "INSERT INTO Historico (idHistorico, usoRamHistorico, usoProcessadorHistorico, usoDiscoHistorico, fkMaquinaHistorico) VALUES (null, ?, ?, ?, ?)";
+        String insertHistorico = "INSERT INTO Historico ( usoRamHistorico, usoProcessadorHistorico, usoDiscoHistorico, fkMaquinaHistorico) VALUES ( ?, ?, ?, ?)";
 
         // Parametros para o primeiro insert
         Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
@@ -131,7 +138,9 @@ public class MonitoramentoFuncao {
                 processadorTotal * 0.2,
                 discoTotalInteger * 0.1,
                 discoTotalInteger * 0.2);
-        String insertAlerta = "INSERT INTO Alerta (fkMaquina,componente,nivelAlerta,dado,datahoraAlerta) VALUES (?, ?, ?, ?)";
+        
+        
+        String insertAlerta = "INSERT INTO Alerta ( fkMaquina,componente, nivelAlerta,dado,datahoraAlerta) VALUES ( ?, ?, ?, ?, ?)";
 
         // DISCO
         Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
@@ -140,10 +149,10 @@ public class MonitoramentoFuncao {
         Integer disco = Integer.parseInt(discoString);
 
         if (disco >= metricas.getDiscoVermelho()) {
-            con.update(insertAlerta, idMaquina, "vermelho", disco.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "vermelho", "Disco", disco.toString(), metricas.getDateTime());
             SlackApi.mandarMensagemParaSlack("Uso de Disco acima de 90%", "Uso de Disco", discoString);
         } else if (disco >= metricas.getDiscoAmarelo()) {
-            con.update(insertAlerta, idMaquina, "amarelo", disco.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "amarelo", "Disco", disco.toString(), metricas.getDateTime());
         }
 
         // RAM
@@ -153,9 +162,9 @@ public class MonitoramentoFuncao {
         Integer ram = Integer.parseInt(ramString2);
 
         if (ram >= metricas.getRamVermelho()) {
-            con.update(insertAlerta, idMaquina, "vermelho", ram.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "vermelho","RAM", ram.toString(), metricas.getDateTime());
         } else if (ram >= metricas.getRamAmarelo()) {
-            con.update(insertAlerta, idMaquina, "amarelo", ram.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "amarelo","RAM", ram.toString(), metricas.getDateTime());
         }
 
         // CPU
@@ -164,12 +173,12 @@ public class MonitoramentoFuncao {
         processadorString2 = processadorString2.substring(0, 3);
         Double processador = Double.parseDouble(processadorString2);
         processador++;
-        processador = processador / 100;
+        processador = processador / 100; 
 
         if (processador >= metricas.getCpuVermelho()) {
-            con.update(insertAlerta, idMaquina, "vermelho", processador.toString(), metricas.getDateTime());
-        } else if (processador >= metricas.getDiscoAmarelo()) {
-            con.update(insertAlerta, idMaquina, "amarelo", processador.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "vermelho","CPU", processador.toString(), metricas.getDateTime());
+        } else if (processador >= metricas.getCpuAmarelo()) {
+            con.update(insertAlerta, idMaquina, "amarelo", "CPU", processador.toString(), metricas.getDateTime());
         }
 
     }
@@ -198,7 +207,7 @@ public class MonitoramentoFuncao {
         conn = new Conexao().conectaBD();
 
         try {
-            String selectIdentificadorMaquina = "select idMaquina from Maquinas order by idMaquina desc limit 1";
+            String selectIdentificadorMaquina = "select top 1 idMaquina from Maquinas order by idMaquina desc ";
             PreparedStatement pstm = conn.prepareStatement(selectIdentificadorMaquina);
             ResultSet rs = pstm.executeQuery();
             rs.next();
