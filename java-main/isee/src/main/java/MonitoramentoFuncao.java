@@ -130,12 +130,12 @@ public class MonitoramentoFuncao {
         processadorTotal = processadorTotal / 100;
 
         MetricaAlerta metricas = new MetricaAlerta(
-                ramTotal * 0.1,
-                ramTotal * 0.2,
-                processadorTotal * 0.1,
-                processadorTotal * 0.2,
-                discoTotalInteger * 0.1,
-                discoTotalInteger * 0.2);
+                ramTotal * 0.7,
+                ramTotal * 0.8,
+                processadorTotal * 0.6,
+                processadorTotal * 0.8,
+                discoTotalInteger * 0.7,
+                discoTotalInteger * 0.9);
 
         String insertAlerta = "INSERT INTO Alerta ( fkMaquina,componente, nivelAlerta,dado,datahoraAlerta) VALUES ( ?, ?, ?, ?, ?)";
 
@@ -146,10 +146,10 @@ public class MonitoramentoFuncao {
         Integer disco = Integer.parseInt(discoString);
 
         if (disco >= metricas.getDiscoVermelho()) {
-            con.update(insertAlerta, idMaquina, "vermelho", "Disco", disco.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "vermelho", "disco", disco.toString(), metricas.getDateTime());
             SlackApi.mandarMensagemParaSlack("Uso de Disco acima de 90%", "Uso de Disco", discoString);
         } else if (disco >= metricas.getDiscoAmarelo()) {
-            con.update(insertAlerta, idMaquina, "amarelo", "Disco", disco.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "amarelo", "disco", disco.toString(), metricas.getDateTime());
         }
 
         // RAM
@@ -159,10 +159,10 @@ public class MonitoramentoFuncao {
         Integer ram = Integer.parseInt(ramString2);
 
         if (ram >= metricas.getRamVermelho()) {
-            con.update(insertAlerta, idMaquina, "vermelho", "RAM", ram.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "vermelho", "ram", ram.toString(), metricas.getDateTime());
             SlackApi.mandarMensagemParaSlack("Uso de RAM acima de 80%", "Uso de RAM", ramString2);
         } else if (ram >= metricas.getRamAmarelo()) {
-            con.update(insertAlerta, idMaquina, "amarelo", "RAM", ram.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "amarelo", "ram", ram.toString(), metricas.getDateTime());
         }
 
         // CPU
@@ -174,10 +174,10 @@ public class MonitoramentoFuncao {
         processador = processador / 100;
 
         if (processador >= metricas.getCpuVermelho()) {
-            con.update(insertAlerta, idMaquina, "vermelho", "CPU", processador.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "vermelho", "cpu", processador.toString(), metricas.getDateTime());
             SlackApi.mandarMensagemParaSlack("Uso de CPU acima de 80%", "Uso de RAM", processadorString2);
         } else if (processador >= metricas.getCpuAmarelo()) {
-            con.update(insertAlerta, idMaquina, "amarelo", "CPU", processador.toString(), metricas.getDateTime());
+            con.update(insertAlerta, idMaquina, "amarelo", "cpu", processador.toString(), metricas.getDateTime());
         }
 
     }
