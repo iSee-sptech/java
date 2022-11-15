@@ -39,9 +39,9 @@ public class MonitoramentoFuncao {
          if (disco.length() > 12) {
             disco = disco.substring(0, 4);
         } else if(disco.length() > 11) {
-            disco = disco.substring(0, 2);
+             disco = disco.substring(0, 3);
         } else {  
-            disco = disco.substring(0, 3);
+             disco = disco.substring(0, 2);
         }
 
         Long Total = dados.getTotal();
