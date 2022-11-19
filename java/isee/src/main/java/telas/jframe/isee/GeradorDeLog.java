@@ -22,7 +22,7 @@ public class GeradorDeLog {
         DateTimeFormatter hora = DateTimeFormatter.ofPattern("HH:mm:ss");
         String horaFom = hora.format(agora);
 
-        Path path = Paths.get("\\home\\ubuntu\\Documents\\logs\\logs.txt");
+        Path path = Paths.get("/home/ubuntu/Documents/log/logs.txt");
 
         if (!Files.exists(path)) {
 
@@ -30,7 +30,7 @@ public class GeradorDeLog {
 
         }
 
-        File log = new File("\\home\\ubuntu\\Documents\\logs\\logs.txt");
+        File log = new File("/home/ubuntu/Documents/logs/logs.txt");
 
         if (!log.exists()) {
 
