@@ -98,10 +98,10 @@ public class MonitoramentoFuncao {
 
         Double Uso = dados2.getUso();
         String processadorString = Double.toString(Uso);
-        processadorString = processadorString.substring(0, 3);
+        //processadorString = processadorString.substring(0, 3);
         Double processador = Double.parseDouble(processadorString);
-        processador++;
-        processador = processador / 100;
+        //processador++;
+        //processador = processador / 100;
 
         String idMaquinaString = identificadorMaquina();
         int idMaquina = Integer.parseInt(idMaquinaString);
