@@ -10,10 +10,10 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-
 public class GeradorDeLog {
 
     public static void gerarLog(String tipo) throws IOException {
+
         LocalDateTime agora = LocalDateTime.now();
 
         DateTimeFormatter data = DateTimeFormatter.ofPattern("dd/MM/uuuu");
@@ -22,7 +22,7 @@ public class GeradorDeLog {
         DateTimeFormatter hora = DateTimeFormatter.ofPattern("HH:mm:ss");
         String horaFom = hora.format(agora);
 
-        Path path = Paths.get("/home/ubuntu/Documents/logs/logs.txt");
+        Path path = Paths.get("Log");
 
         if (!Files.exists(path)) {
 
@@ -30,7 +30,7 @@ public class GeradorDeLog {
 
         }
 
-        File log = new File("/home/ubuntu/Documents/logs/logs.txt");
+        File log = new File("Log/logs.txt");
 
         if (!log.exists()) {
 
@@ -42,42 +42,28 @@ public class GeradorDeLog {
         BufferedWriter bw = new BufferedWriter(fw);
 
         if (tipo.equalsIgnoreCase("loginRealizado")) {
-            bw.write("Usuário efetuou login com sucesso - " + dataForm + " - " + horaFom);
+            bw.write("Usuário efetuou login com sucesso" + dataForm + " - " + horaFom);
             bw.write("__________________________________________________________________________________________");
             bw.newLine();
 
             bw.close();
             fw.close();
         } else if (tipo.equalsIgnoreCase("loginErro")) {
-            bw.write("Erro de login - Não foi possivel efetuar o login pois o email ou a senha está incorreta - " + dataForm + " - " + horaFom);
+            bw.write("Erro de login - Não foi possivel efetuar o login pois o email ou a senha está incorreta" + dataForm + " - " + horaFom);
             bw.write("__________________________________________________________________________________________");
             bw.newLine();
 
             bw.close();
             fw.close();
         } else if (tipo.equalsIgnoreCase("maquinaCadastrada")) {
-            bw.write("Cadastro de maquina realizado com sucesso - " + dataForm + " - " + horaFom);
-            bw.write("__________________________________________________________________________________________");
-            bw.newLine();
-
-            bw.close();
-            fw.close();
-        } else if (tipo.equalsIgnoreCase("maquinaLigada")) {
-            bw.write("Máquina ligada (Capturando dados)- " + dataForm + " - " + horaFom);
-            bw.write("__________________________________________________________________________________________");
-            bw.newLine();
-
-            bw.close();
-            fw.close();
-        } else if (tipo.equalsIgnoreCase("maquinaDesligada")) {
-            bw.write("A máquina foi desligada - " + dataForm + " - " + horaFom);
+            bw.write("Cadastro de maquina realizado com sucesso" + dataForm + " - " + horaFom);
             bw.write("__________________________________________________________________________________________");
             bw.newLine();
 
             bw.close();
             fw.close();
         } else if (tipo.equalsIgnoreCase("bdErro")) {
-            bw.write("Erro no Banco - Banco de dados não conectado - " + dataForm + " - " + horaFom);
+            bw.write("Erro no Banco - Banco de dados não conectado" + dataForm + " - " + horaFom);
             bw.write("__________________________________________________________________________________________");
             bw.newLine();
 

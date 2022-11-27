@@ -1,13 +1,11 @@
 package telas.jframe.isee;
 
+
 import java.awt.Color;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.TimerTask;
 import java.util.Timer;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -26,7 +24,7 @@ public class TelaCadastroMaquina2 extends javax.swing.JFrame {
     public TelaCadastroMaquina2() {
         initComponents();
         getContentPane().setBackground(Color.decode("#161616"));
-        funcao dados = new funcao();
+         funcao dados = new funcao();
 
         MonitoramentoFuncao func = new MonitoramentoFuncao();
         func.registrarMaquina(dados);
@@ -185,12 +183,10 @@ public class TelaCadastroMaquina2 extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     int j = 0;
-    Boolean check = false;
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         j++;
         Timer timer;
-        if (j == 1) {
-
+        if (j == 1) {  
             System.out.println(j);
             jLabel5.setText("Ativado");
             jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/toggleAtivado.png")));
@@ -200,32 +196,19 @@ public class TelaCadastroMaquina2 extends javax.swing.JFrame {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-
                     try {
                         System.out.println("Dado envidado para registro");
                         func.registrarHistorico(dados2);
                         func.registrarAlertas(dados2);
-                        if (check == false) {
-                            GeradorDeLog.gerarLog("maquinaCadastrada");
-                            GeradorDeLog.gerarLog("maquinaLigada");
-                            check = true;
-                        }
-
-                    } catch (IOException erro) {
+                    } catch (Exception erro) {
                         JOptionPane.showMessageDialog(null, "Historico: " + erro);
+
                     }
                     if (j == 2) {
                         jLabel5.setText("Desligado");
                         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/toggleDesativado.png")));
                         j = 0;
                         timer.cancel();
-
-                        try {
-                            GeradorDeLog.gerarLog("maquinaDesligada");
-                        } catch (IOException ex) {
-                            Logger.getLogger(TelaCadastroMaquina2.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-
                     }
                 }
 
@@ -243,8 +226,8 @@ public class TelaCadastroMaquina2 extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel11MouseClicked
 
     /**
-     * @param args the command line arguments
-     */
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
