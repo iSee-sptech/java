@@ -68,7 +68,7 @@ public class Conexao {
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/iSee?user=localhost&password=root";
+            String url = "jdbc:mysql://localhost:3306/iSee?";
             conn = DriverManager.getConnection(url);
             
         } catch(SQLException erro){
