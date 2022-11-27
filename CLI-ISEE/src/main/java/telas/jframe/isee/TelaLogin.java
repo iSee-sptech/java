@@ -14,8 +14,14 @@ public class TelaLogin {
         Boolean i = true;
 
         do {
-            System.out.println("\nSeja bem-vindo a ISee");
-            System.out.println("\nLogin");
+            System.out.println("  _____  _____ ______ ______ \n" +
+" |_   _|/ ____|  ____|  ____|\n" +
+"   | | | (___ | |__  | |__   \n" +
+"   | |  \\___ \\|  __| |  __|  \n" +
+"  _| |_ ____) | |____| |____ \n" +
+" |_____|_____/|______|______|\n" );
+            System.out.println("Seja bem-vindo a ISee");
+            System.out.println("\nFaça seu Login");
             System.out.println("E-mail:");
             String email = scanner.next();
             System.out.println("Senha:");
