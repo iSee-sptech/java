@@ -31,8 +31,10 @@ public class Conexao {
         datasource.setPassword("Projetoisee123");
 
         datasourceMySql.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        datasourceMySql.setUrl("jdbc:mysql://localhost:3360/image_v3");
-        datasourceMySql.setUsername("root");
+        //datasourceMySql.setUrl("jdbc:mysql://localhost:3360/image_v3");
+        datasourceMySql.setUrl("jdbc:mysql://localhost:3360/isee");
+        //datasourceMySql.setUsername("root");
+        datasourceMySql.setUsername("localhost");
         datasourceMySql.setPassword("root");
         connection = new JdbcTemplate(datasource);
     }
@@ -50,7 +52,6 @@ public class Conexao {
         
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-           // String url = "jdbc:mysql://localhost:3306/iSee?user=root&password=KingOfNothing000"; MYSQL
             String url = "jdbc:sqlserver://svr-isee.database.windows.net:1433;database=isee;user=grupo8@svr-isee;password=Projetoisee123";
             conn = DriverManager.getConnection(url);
             
@@ -67,7 +68,7 @@ public class Conexao {
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/iSee?user=root&password=root";
+            String url = "jdbc:mysql://localhost:3306/iSee?user=localhost&password=root";
             conn = DriverManager.getConnection(url);
             
         } catch(SQLException erro){
