@@ -184,7 +184,7 @@ public class MonitoramentoFuncao {
         // CPU
         Double Uso = dados2.getUso();
         String processadorString2 = Double.toString(Uso);
-        //processadorString2 = processadorString2.substring(0, 3);
+        processadorString2 = processadorString2.substring(0, 4);
         Double processador = Double.parseDouble(processadorString2);
         //processador++;
         //processador = processador / 100;
