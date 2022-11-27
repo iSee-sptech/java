@@ -133,17 +133,18 @@ public class MonitoramentoFuncao {
         processadorString = processadorString.substring(0, 3);
         Double processadorTotal = Double.parseDouble(processadorString);
         processadorTotal++;
-        processadorTotal = processadorTotal / 100;
+        processadorTotal = processadorTotal / 100 / 100;
+   
 
         MetricaAlerta metricas = new MetricaAlerta(
                 ramTotal * 0.7,
                 ramTotal * 0.8,
-                processadorTotal * 0.6,
-                processadorTotal * 0.8,
+                processadorTotal * 60,
+                processadorTotal * 80,
                 discoTotalInteger * 0.7,
                 discoTotalInteger * 0.9);
 
-        String insertAlerta = "INSERT INTO Alerta ( fkMaquina,componente, nivelAlerta,dado,datahoraAlerta) VALUES ( ?, ?, ?, ?, ?)";
+        String insertAlerta = "INSERT INTO Alerta ( fkMaquina,nivelAlerta,componente,dado,datahoraAlerta) VALUES ( ?, ?, ?, ?, ?)";
 
         // DISCO
         Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
@@ -174,10 +175,11 @@ public class MonitoramentoFuncao {
         // CPU
         Double Uso = dados2.getUso();
         String processadorString2 = Double.toString(Uso);
-        processadorString2 = processadorString2.substring(0, 3);
+        //processadorString2 = processadorString2.substring(0, 3);
         Double processador = Double.parseDouble(processadorString2);
-        processador++;
-        processador = processador / 100;
+        //processador++;
+        //processador = processador / 100;
+        
 
         if (processador >= metricas.getCpuVermelho()) {
             con.update(insertAlerta, idMaquina, "vermelho", "cpu", processador.toString(), metricas.getDateTime());
