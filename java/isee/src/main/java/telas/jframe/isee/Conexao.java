@@ -13,13 +13,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class Conexao {
 
     private JdbcTemplate connection;
+    private JdbcTemplate connectionMySql;
 
     // Exemplo de configuração utilizando H2
     // Obs. O código comentado é um exemplo de como se conectar ao mysql
     public Conexao() {
         BasicDataSource datasource = new BasicDataSource();
+        BasicDataSource datasourceMySql = new BasicDataSource();
 
-        //datasource.setDriverClassName("com.mysql.cj.jdbc.Driver"); MYSQL
+        datasourceMySql.setDriverClassName("com.mysql.cj.jdbc.Driver");
         datasource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); 
         
         datasource.setUrl("jdbc:sqlserver://svr-isee.database.windows.net:1433;database=isee");
@@ -28,15 +30,19 @@ public class Conexao {
 
         datasource.setPassword("Projetoisee123");
 
-        //this.datasource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        //this.datasource.setUrl("jdbc:mysql://localhost:3360/meu_banco");
-        //this.datasource.setUsername("root");
-        //this.datasource.setPassword("teste");
+        datasourceMySql.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        datasourceMySql.setUrl("jdbc:mysql://localhost:3360/image_v3");
+        datasourceMySql.setUsername("root");
+        datasourceMySql.setPassword("root");
         connection = new JdbcTemplate(datasource);
     }
 
     public JdbcTemplate getConnection() {
         return connection;
+    }
+    
+    public JdbcTemplate getConnectionMySql() {
+        return connectionMySql;
     }
 
     public Connection conectaBD() {
@@ -55,5 +61,20 @@ public class Conexao {
         }
         return conn;
     }
-
+    
+    public Connection conectaBDMySql() {
+        Connection conn = null;
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/iSee?user=root&password=root";
+            conn = DriverManager.getConnection(url);
+            
+        } catch(SQLException erro){
+            JOptionPane.showMessageDialog(null, "Conexao Login MySql" + erro.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return conn;
+    }
 }

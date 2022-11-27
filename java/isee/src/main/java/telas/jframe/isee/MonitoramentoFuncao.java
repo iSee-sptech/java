@@ -18,6 +18,8 @@ public class MonitoramentoFuncao {
     Conexao connection = new Conexao();
     TelaLogin login = new TelaLogin();
     JdbcTemplate con = connection.getConnection();
+    JdbcTemplate conMySql = connection.getConnectionMySql();
+    
 
     public void registrarMaquina(funcao dados) {
 
@@ -65,9 +67,10 @@ public class MonitoramentoFuncao {
 
         String insertMaquina = String.format("INSERT INTO Maquinas (sistemaOperacionalMaquina, fabricanteMaquina, arquiteturaMaquina, tempoDeAtividade, discoMaquina, ramMaquina, processadorMaquina) VALUES ('%s', '%s', '%d', '%d', '%s', '%d', '%.1f')", so, fabricante, arquitetura, tempoAtividade, disco, ram, processador);
         con.execute(insertMaquina);
+        String insertMaquinaMySql = String.format("INSERT INTO Maquinas (idMaquina,sistemaOperacionalMaquina, fabricanteMaquina, arquiteturaMaquina, tempoDeAtividade, discoMaquina, ramMaquina, processadorMaquina) VALUES ('%d',%s', '%s', '%d', '%d', '%s', '%d', '%.1f')", 1, so, fabricante, arquitetura, tempoAtividade, disco, ram, processador);
+        conMySql.execute(insertMaquinaMySql);
 
-        
-        
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Registrar Maquina: " + erro);
         }
@@ -85,7 +88,7 @@ public class MonitoramentoFuncao {
     public void registrarHistorico(funcao dados2) {
 
         String insertHistorico = "INSERT INTO Historico ( usoRamHistorico, usoProcessadorHistorico, usoDiscoHistorico, fkMaquinaHistorico) VALUES ( ?, ?, ?, ?)";
-
+        String insertHistoricoMySql = "INSERT INTO Historico ( usoRamHistorico, usoProcessadorHistorico, usoDiscoHistorico, fkMaquinaHistorico) VALUES ( ?, ?, ?, 1)";
         // Parametros para o primeiro insert
         Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
         String disco = Long.toString(TempoDeTransferencia);
@@ -108,6 +111,7 @@ public class MonitoramentoFuncao {
         // int idMaquina = selectMaquina();
 
         con.update(insertHistorico, ram, processador, disco, idMaquina);
+        conMySql.update(insertHistorico, ram, processador, disco);
 
     }
 
@@ -145,6 +149,7 @@ public class MonitoramentoFuncao {
                 discoTotalInteger * 0.9);
 
         String insertAlerta = "INSERT INTO Alerta ( fkMaquina,nivelAlerta,componente,dado,datahoraAlerta) VALUES ( ?, ?, ?, ?, ?)";
+        String insertAlertaMySql = "INSERT INTO Alerta ( fkMaquina,nivelAlerta,componente,dado,datahoraAlerta) VALUES ( 1, ?, ?, ?, ?)";
 
         // DISCO
         Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
@@ -154,9 +159,11 @@ public class MonitoramentoFuncao {
 
         if (disco >= metricas.getDiscoVermelho()) {
             con.update(insertAlerta, idMaquina, "vermelho", "disco", disco.toString(), metricas.getDateTime());
+            conMySql.update(insertAlerta, idMaquina, "vermelho", "disco", disco.toString(), metricas.getDateTime());
             SlackApi.mandarMensagemParaSlack("Uso de Disco acima de 90%", "Uso de Disco", discoString);
         } else if (disco >= metricas.getDiscoAmarelo()) {
             con.update(insertAlerta, idMaquina, "amarelo", "disco", disco.toString(), metricas.getDateTime());
+            conMySql.update(insertAlerta, "amarelo", "disco", disco.toString(), metricas.getDateTime());
         }
 
         // RAM
@@ -166,10 +173,12 @@ public class MonitoramentoFuncao {
         Integer ram = Integer.parseInt(ramString2);
 
         if (ram >= metricas.getRamVermelho()) {
+            conMySql.update(insertAlerta, idMaquina, "vermelho", "ram", ram.toString(), metricas.getDateTime());
             con.update(insertAlerta, idMaquina, "vermelho", "ram", ram.toString(), metricas.getDateTime());
             SlackApi.mandarMensagemParaSlack("Uso de RAM acima de 80%", "Uso de RAM", ramString2);
         } else if (ram >= metricas.getRamAmarelo()) {
             con.update(insertAlerta, idMaquina, "amarelo", "ram", ram.toString(), metricas.getDateTime());
+            conMySql.update(insertAlerta, "amarelo", "ram", ram.toString(), metricas.getDateTime());
         }
 
         // CPU
@@ -183,9 +192,11 @@ public class MonitoramentoFuncao {
 
         if (processador >= metricas.getCpuVermelho()) {
             con.update(insertAlerta, idMaquina, "vermelho", "cpu", processador.toString(), metricas.getDateTime());
+            conMySql.update(insertAlerta, idMaquina, "vermelho", "cpu", processador.toString(), metricas.getDateTime());
             SlackApi.mandarMensagemParaSlack("Uso de CPU acima de 80%", "Uso de RAM", processadorString2);
         } else if (processador >= metricas.getCpuAmarelo()) {
             con.update(insertAlerta, idMaquina, "amarelo", "cpu", processador.toString(), metricas.getDateTime());
+            conMySql.update(insertAlerta, "vermelho", "cpu", processador.toString(), metricas.getDateTime());
         }
 
     }
