@@ -143,7 +143,7 @@ public class MonitoramentoFuncao {
                 discoTotalInteger * 0.7,
                 discoTotalInteger * 0.9);
 
-        String insertAlerta = "INSERT INTO Alerta ( fkMaquina,componente, nivelAlerta,dado,datahoraAlerta) VALUES ( ?, ?, ?, ?, ?)";
+        String insertAlerta = "INSERT INTO Alerta ( fkMaquina,nivelAlerta,componente,dado,datahoraAlerta) VALUES ( ?, ?, ?, ?, ?)";
 
         // DISCO
         Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
