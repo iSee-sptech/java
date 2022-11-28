@@ -13,13 +13,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class Conexao {
 
     private JdbcTemplate connection;
+    private JdbcTemplate connectionMySql;
+    
 
     // Exemplo de configuração utilizando H2
     // Obs. O código comentado é um exemplo de como se conectar ao mysql
     public Conexao() {
-        BasicDataSource datasource = new BasicDataSource();
+BasicDataSource datasource = new BasicDataSource();
+        BasicDataSource datasourceMySql = new BasicDataSource();
 
-        //datasource.setDriverClassName("com.mysql.cj.jdbc.Driver"); MYSQL
+        datasourceMySql.setDriverClassName("com.mysql.cj.jdbc.Driver");
         datasource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); 
         
         datasource.setUrl("jdbc:sqlserver://svr-isee.database.windows.net:1433;database=isee");
@@ -28,15 +31,22 @@ public class Conexao {
 
         datasource.setPassword("Projetoisee123");
 
-        //this.datasource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        //this.datasource.setUrl("jdbc:mysql://localhost:3360/meu_banco");
-        //this.datasource.setUsername("root");
-        //this.datasource.setPassword("teste");
+        datasourceMySql.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        //datasourceMySql.setUrl("jdbc:mysql://localhost:3360/image_v3");
+        datasourceMySql.setUrl("jdbc:mysql://localhost:3360/?serverTimezone=UTC");
+        //datasourceMySql.setUsername("root");
+        datasourceMySql.setUsername("root");
+        datasourceMySql.setPassword("urubu100");
         connection = new JdbcTemplate(datasource);
+        connectionMySql = new JdbcTemplate(datasourceMySql);
     }
 
     public JdbcTemplate getConnection() {
         return connection;
+    }
+    
+    public JdbcTemplate getConnectionMySql() {
+        return connectionMySql;
     }
 
     public Connection conectaBD() {
@@ -44,7 +54,6 @@ public class Conexao {
         
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-           // String url = "jdbc:mysql://localhost:3306/iSee?user=root&password=KingOfNothing000"; MYSQL
             String url = "jdbc:sqlserver://svr-isee.database.windows.net:1433;database=isee;user=grupo8@svr-isee;password=Projetoisee123";
             conn = DriverManager.getConnection(url);
             
@@ -55,5 +64,20 @@ public class Conexao {
         }
         return conn;
     }
-
+    
+    public Connection conectaBDMySql() {
+        Connection conn = null;
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3360/?serverTimezone=UTC";
+            conn = DriverManager.getConnection(url);
+            
+        } catch(SQLException erro){
+            JOptionPane.showMessageDialog(null, "Conexao Login MySql" + erro.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Conexao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return conn;
+    }
 }

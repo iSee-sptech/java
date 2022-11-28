@@ -37,6 +37,7 @@ public class Conexao {
         datasourceMySql.setUsername("root");
         datasourceMySql.setPassword("urubu100");
         connection = new JdbcTemplate(datasource);
+        connectionMySql = new JdbcTemplate(datasourceMySql);
     }
 
     public JdbcTemplate getConnection() {
