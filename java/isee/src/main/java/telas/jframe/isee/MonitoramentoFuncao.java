@@ -58,19 +58,18 @@ public class MonitoramentoFuncao {
             ram--;
         }
 
-        Long frequencia = dados.getFrequencia();
-        String processadorString = Long.toString(frequencia);
-        processadorString = processadorString.substring(0, 3);
-        Double processador = Double.parseDouble(processadorString);
-        processador++;
-        processador = processador / 100;
+       Double processadorDouble = Double.parseDouble(processadorString);
+        processadorDouble++;
+        processadorDouble = processadorDouble / 100;
+        String processador = Double.toString(processadorDouble);
+        processador = processador.replace(',', '.');
+        //String processadorString2 = Double.toString(processadorDouble);
+        //float processador = Float.parseFloat(processadorString2);
 
-        String insertMaquina = String.format("INSERT INTO Maquinas (sistemaOperacionalMaquina, fabricanteMaquina, arquiteturaMaquina, tempoDeAtividade, discoMaquina, ramMaquina, processadorMaquina) VALUES ('%s', '%s', '%d', '%d', '%s', '%d', '%.1f')", so, fabricante, arquitetura, tempoAtividade, disco, ram, processador);
+        String insertMaquina = String.format("INSERT INTO Maquinas (sistemaOperacionalMaquina, fabricanteMaquina, arquiteturaMaquina, tempoDeAtividade, discoMaquina, ramMaquina, processadorMaquina) VALUES ('%s', '%s', '%d', '%d', '%s', '%d', '%s')", so, fabricante, arquitetura, tempoAtividade, disco, ram, processador);
         con.execute(insertMaquina);
-        String insertMaquinaMySql = String.format("INSERT INTO Maquinas (idMaquina,sistemaOperacionalMaquina, fabricanteMaquina, arquiteturaMaquina, tempoDeAtividade, discoMaquina, ramMaquina, processadorMaquina) VALUES ('%d',%s', '%s', '%d', '%d', '%s', '%d', '%.1f')", 1, so, fabricante, arquitetura, tempoAtividade, disco, ram, processador);
-        conMySql.execute(insertMaquinaMySql);
 
-
+        
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Registrar Maquina: " + erro);
         }
