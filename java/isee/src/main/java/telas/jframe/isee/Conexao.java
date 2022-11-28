@@ -32,10 +32,10 @@ public class Conexao {
 
         datasourceMySql.setDriverClassName("com.mysql.cj.jdbc.Driver");
         //datasourceMySql.setUrl("jdbc:mysql://localhost:3360/image_v3");
-        datasourceMySql.setUrl("jdbc:mysql://localhost:3360/isee");
+        datasourceMySql.setUrl("jdbc:mysql://localhost:3360/?serverTimezone=UTC");
         //datasourceMySql.setUsername("root");
-        datasourceMySql.setUsername("localhost");
-        datasourceMySql.setPassword("root");
+        datasourceMySql.setUsername("root");
+        datasourceMySql.setPassword("urubu100");
         connection = new JdbcTemplate(datasource);
     }
 
@@ -68,7 +68,7 @@ public class Conexao {
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/iSee?";
+            String url = "jdbc:mysql://localhost:3360/?serverTimezone=UTC";
             conn = DriverManager.getConnection(url);
             
         } catch(SQLException erro){

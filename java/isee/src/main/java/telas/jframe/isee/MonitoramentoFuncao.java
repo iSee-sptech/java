@@ -57,8 +57,10 @@ public class MonitoramentoFuncao {
         if (ram > 10) {
             ram--;
         }
-
-       Double processadorDouble = Double.parseDouble(processadorString);
+        
+        Long frequencia = dados.getFrequencia();
+        String processadorString = Long.toString(frequencia);
+        Double processadorDouble = Double.parseDouble(processadorString);
         processadorDouble++;
         processadorDouble = processadorDouble / 100;
         String processador = Double.toString(processadorDouble);
@@ -68,7 +70,8 @@ public class MonitoramentoFuncao {
 
         String insertMaquina = String.format("INSERT INTO Maquinas (sistemaOperacionalMaquina, fabricanteMaquina, arquiteturaMaquina, tempoDeAtividade, discoMaquina, ramMaquina, processadorMaquina) VALUES ('%s', '%s', '%d', '%d', '%s', '%d', '%s')", so, fabricante, arquitetura, tempoAtividade, disco, ram, processador);
         con.execute(insertMaquina);
-
+        String insertMaquinaMySql = String.format("INSERT INTO Maquinas (sistemaOperacionalMaquina, fabricanteMaquina, arquiteturaMaquina, tempoDeAtividade, discoMaquina, ramMaquina, processadorMaquina) VALUES ('%s', '%s', '%d', '%d', '%s', '%d', '%s')", so, fabricante, arquitetura, tempoAtividade, disco, ram, processador);
+        conMySql.execute(insertMaquinaMySql);
         
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Registrar Maquina: " + erro);
@@ -87,7 +90,7 @@ public class MonitoramentoFuncao {
     public void registrarHistorico(funcao dados2) {
 
         String insertHistorico = "INSERT INTO Historico ( usoRamHistorico, usoProcessadorHistorico, usoDiscoHistorico, fkMaquinaHistorico) VALUES ( ?, ?, ?, ?)";
-        String insertHistoricoMySql = "INSERT INTO Historico ( usoRamHistorico, usoProcessadorHistorico, usoDiscoHistorico, fkMaquinaHistorico) VALUES ( ?, ?, ?, 1)";
+        String insertHistoricoMySql = "INSERT INTO Historico ( usoRamHistorico, usoProcessadorHistorico, usoDiscoHistorico) VALUES ( '?', '?', '?')";
         // Parametros para o primeiro insert
         Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
         String disco = Long.toString(TempoDeTransferencia);
@@ -110,7 +113,7 @@ public class MonitoramentoFuncao {
         // int idMaquina = selectMaquina();
 
         con.update(insertHistorico, ram, processador, disco, idMaquina);
-        conMySql.update(insertHistorico, ram, processador, disco);
+        conMySql.update(insertHistoricoMySql, ram, processador, disco);
 
     }
 
@@ -148,7 +151,7 @@ public class MonitoramentoFuncao {
                 discoTotalInteger * 0.9);
 
         String insertAlerta = "INSERT INTO Alerta ( fkMaquina,nivelAlerta,componente,dado,datahoraAlerta) VALUES ( ?, ?, ?, ?, ?)";
-        String insertAlertaMySql = "INSERT INTO Alerta ( fkMaquina,nivelAlerta,componente,dado,datahoraAlerta) VALUES ( 1, ?, ?, ?, ?)";
+        String insertAlertaMySql = "INSERT INTO Alerta (nivelAlerta,componente,dado,datahoraAlerta) VALUES (?, ?, ?, ?)";
 
         // DISCO
         Long TempoDeTransferencia = dados2.getTempoDeTransferencia();
