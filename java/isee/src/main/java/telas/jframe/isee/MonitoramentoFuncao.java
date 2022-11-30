@@ -60,6 +60,7 @@ public class MonitoramentoFuncao {
         
         Long frequencia = dados.getFrequencia();
         String processadorString = Long.toString(frequencia);
+        processadorString = processadorString.substring(0, 3);
         Double processadorDouble = Double.parseDouble(processadorString);
         processadorDouble++;
         processadorDouble = processadorDouble / 100;
